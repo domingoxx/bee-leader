@@ -5,7 +5,7 @@ services:
         #volumes:
         #- "/home/q/bee/docker-test/bee-clef:/app/data"
   bee-leader:
-    build: ./leader-docker
+    image: "kkwang/bee-leader:1.0.0"
     volumes:
       - "./data:/opt/data"
   bee:
