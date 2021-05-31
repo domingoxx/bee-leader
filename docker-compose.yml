@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+        #clef:
+        #image: "ethersphere/clef:0.4.12"
+        #volumes:
+        #- "/home/q/bee/docker-test/bee-clef:/app/data"
+  bee-leader:
+    build: ./leader-docker
+    volumes:
+      - "./data:/opt/data"
+  bee:
+    user: root
+    image: "ethersphere/bee:0.5.3"
+    command: ["init", "--debug-api-enable","--verbosity","5","--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", "--clef-signer-enable", "--clef-signer-endpoint", "/var/lib/bee-clef/clef.ipc","--password", "aaabbb233"]
+    volumes:
+      - "/var/lib/bee-clef/clef.ipc:/var/lib/bee-clef/clef.ipc"
+    deploy:
+      mode: replicated
+      replicas: 3
