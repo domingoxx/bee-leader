@@ -11,8 +11,9 @@ case "$GET_ADDRESS" in
   "NotFound")
 
     echo "bee 初始化"
-    
-    GET_ADDRESS=`bee init $BEE_ARGS | grep "using ethereum address" | awk -Faddress'{print $6}' | awk -F\" '{print $1}'`
+    BEE_INIT=`bee init $BEE_ARGS`
+    echo "$BEE_INIT"
+    GET_ADDRESS=`echo "$BEE_INIT" | grep "using ethereum address" | awk -Faddress'{print $6}' | awk -F\" '{print $1}'`
     
     if [ ! -z "$GET_ADDRESS" -a "$GET_ADDRESS" != " " ]; then
 

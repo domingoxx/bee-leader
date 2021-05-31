@@ -6,12 +6,13 @@ services:
         #- "/home/q/bee/docker-test/bee-clef:/app/data"
   bee-leader:
     image: "kkwang/bee-multi-node:leader.1.0.0"
+    ports: 
+      - "3000:3000"
     volumes:
       - "./data/leader:/opt/data/db"
   bee:
     image: "kkwang/bee-multi-node:bee.1.0.0"
     command: [
-      "start", 
       "--debug-api-enable",
       "--verbosity","5",
       "--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", 
