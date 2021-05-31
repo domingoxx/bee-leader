@@ -13,7 +13,7 @@ case "$GET_ADDRESS" in
     echo "bee 初始化"
     BEE_INIT=`bee init $BEE_ARGS`
     echo "$BEE_INIT"
-    GET_ADDRESS=`echo "$BEE_INIT" | grep "using ethereum address" | awk -Faddress '{print $1}' | awk -F\" '{print $1}'`
+    GET_ADDRESS=`echo "$BEE_INIT" | grep "using ethereum address" | awk -Faddress '{print $2}'`
     echo "$GET_ADDRESS"
     echo "${GET_ADDRESS:1:-1}"
     if [ ! -z "$GET_ADDRESS" -a "$GET_ADDRESS" != " " ]; then
