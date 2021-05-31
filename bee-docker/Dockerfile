@@ -7,7 +7,7 @@ ADD wait_for.sh /
 RUN chmod 755 /start_bee.sh \
     && mkdir -p /opt/bee \
     && apt-get update \
-    && apt-get install -y curl \
+    && apt-get install -y curl netcat \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*;
     
