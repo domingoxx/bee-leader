@@ -18,7 +18,6 @@ services:
       "--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", 
       "--clef-signer-enable", 
       "--clef-signer-endpoint", "/var/lib/bee-clef/clef.ipc",
-      "--data-dir","/opt/bee",
       "--password", "aaabbb233"
       ]
     volumes:

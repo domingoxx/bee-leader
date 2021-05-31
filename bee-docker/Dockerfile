@@ -4,7 +4,7 @@ USER root
 
 ADD start_bee.sh /
 ADD wait_for.sh /
-RUN chmod 755 /opt/start_bee.sh \
+RUN chmod 755 /start_bee.sh \
     && mkdir -p /opt/bee \
     && apt-get update \
     && apt-get install -y curl \
@@ -13,5 +13,7 @@ RUN chmod 755 /opt/start_bee.sh \
     
 WORKDIR /opt/bee
 VOLUME /opt/bee
+
+EXPOSE 1633 1634 1635
 
 ENTRYPOINT ["/start_bee.sh"]
