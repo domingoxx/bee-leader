@@ -5,15 +5,24 @@ services:
         #volumes:
         #- "/home/q/bee/docker-test/bee-clef:/app/data"
   bee-leader:
-    image: "kkwang/bee-leader:1.0.0"
+    image: "kkwang/bee-multi-node:leader.1.0.0"
     volumes:
-      - "./data:/opt/data"
+      - "./data/leader:/opt/data/db"
   bee:
-    user: root
-    image: "ethersphere/bee:0.5.3"
-    command: ["init", "--debug-api-enable","--verbosity","5","--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", "--clef-signer-enable", "--clef-signer-endpoint", "/var/lib/bee-clef/clef.ipc","--password", "aaabbb233"]
+    image: "kkwang/bee-multi-node:bee.1.0.0"
+    command: [
+      "start", 
+      "--debug-api-enable",
+      "--verbosity","5",
+      "--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", 
+      "--clef-signer-enable", 
+      "--clef-signer-endpoint", "/var/lib/bee-clef/clef.ipc",
+      "--data-dir","/opt/bee",
+      "--password", "aaabbb233"
+      ]
     volumes:
       - "/var/lib/bee-clef/clef.ipc:/var/lib/bee-clef/clef.ipc"
+      - "./data/bee:/opt/bee"
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
