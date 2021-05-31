@@ -4,5 +4,6 @@ ADD bee-leader.py /
 RUN mkdir -p /opt/data/db && pip3 install flask
 WORKDIR /opt/data
 VOLUME /opt/data/db
+EXPOSE 5000
 
 CMD ["python3", "/bee-leader.py"]

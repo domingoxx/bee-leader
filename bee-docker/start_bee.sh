@@ -2,9 +2,12 @@
 
 echo "$*"
 
+sh /wait_for.sh bee-leader:5000
+
 BEE_ARGS="$*"
 
 GET_ADDRESS=`curl -L http://bee-leader:5000/getAddress`
+
 echo $GET_ADDRESS
 
 case "$GET_ADDRESS" in
@@ -37,6 +40,10 @@ case "$GET_ADDRESS" in
   ;;
 esac
 
-bee start $BEE_ARGS --data-dir /opt/bee/$GET_ADDRESS
+if [ ! -z "$GET_ADDRESS" -a "$GET_ADDRESS" != " " ]; then
+  bee start $BEE_ARGS --data-dir /opt/bee/$GET_ADDRESS
 
-curl -L http://bee-leader:5000/getAddress?address=$GET_ADDRESS
+  curl -L http://bee-leader:5000/getAddress?address=$GET_ADDRESS
+else
+  echo "启动失败，地址为空 $GET_ADDRESS"
+fi

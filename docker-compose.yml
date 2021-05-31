@@ -7,7 +7,7 @@ services:
   bee-leader:
     image: "kkwang/bee-multi-node:leader.1.0.0"
     ports: 
-      - "3000:3000"
+      - "5000:5000"
     volumes:
       - "./data/leader:/opt/data/db"
   bee:
