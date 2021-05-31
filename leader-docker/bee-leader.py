@@ -158,7 +158,7 @@ def select_all():
 def select_by_address(address):
   conn = getSqlite()
   cursor = conn.cursor()
-  cursor.execute("select %s from bee_data where address = %s " % (','.join(fields), address))
+  cursor.execute("select %s from bee_data where address = '%s' " % (','.join(fields), address))
   row = cursor.fetchone()
   item = None
   
