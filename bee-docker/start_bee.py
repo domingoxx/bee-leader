@@ -1,4 +1,5 @@
 
+from re import sub
 import sys
 import websockets
 import asyncio
@@ -224,11 +225,20 @@ async def connectLeader():
       print(pong, flush=True)
       await asyncio.sleep(3)
     if bee_process.returncode == None:
-      bee_process.kill()
+      print('send terminate bee', flush=True)
+      bee_process.terminate()
+      bee_process.wait(5)
+      if bee_process.returncode == None:
+        subprocess.check_output(f"kill -9 {bee_process.pid}", shell=True)
     if clef_process.returncode == None:
-      clef_process.kill()
+      print('send terminate clef', flush=True)
+      clef_process.terminate()
+      clef_process.wait(5)
+      if clef_process.returncode == None:
+        subprocess.check_output(f"kill -9 {clef_process.pid}", shell=True)
     if not connection.closed:
       await connection.close()
-    exit()
+    
+    
 
 asyncio.get_event_loop().run_until_complete(connectLeader())
