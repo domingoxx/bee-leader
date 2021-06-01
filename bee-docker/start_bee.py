@@ -229,6 +229,6 @@ async def connectLeader():
       clef_process.kill()
     if not connection.closed:
       await connection.close()
-    # exit()
+    exit()
 
 asyncio.get_event_loop().run_until_complete(connectLeader())
