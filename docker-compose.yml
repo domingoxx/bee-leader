@@ -7,22 +7,20 @@ services:
   bee-leader:
     image: "kkwang/bee-multi-node:leader.1.0.0"
     ports: 
-      - "5000:5000"
+      - "3000:3000"
     volumes:
       - "./data/leader:/opt/data/db"
   bee:
+    environment:
+      - BEE_LEADER_WS_URL=ws://bee-leader:3000/ws
     image: "kkwang/bee-multi-node:bee.1.0.0"
     command: [
       "--debug-api-enable",
       "--verbosity","5",
       "--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", 
-      "--clef-signer-enable", 
-      "--clef-signer-endpoint", "/var/lib/bee-clef/clef.ipc",
-      "--password", "aaabbb233"
       ]
     volumes:
-      - "/var/lib/bee-clef/clef.ipc:/var/lib/bee-clef/clef.ipc"
-      - "./data/bee:/opt/bee"
+      - "./data/bee:/opt/bee/data"
     deploy:
       mode: replicated
       replicas: 1

@@ -2,10 +2,69 @@ from flask import Flask, request, Response
 import sqlite3
 import hashlib
 import json
+import uuid
+import time
+import os, sys
+from flask_sockets import Sockets
 
+from gevent import monkey,pywsgi
+from geventwebsocket.handler import WebSocketHandler
+import geventwebsocket
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
+sys.path.append("..")
+monkey.patch_all()
 
 
 app = Flask(__name__)
+
+
+sockets = Sockets(app)
+now = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))
+
+
+@sockets.route('/ws')  # 指定路由
+def echo_socket(ws):
+  
+  remoteAddress = ws.environ['REMOTE_ADDR']
+  message = ws.receive()  # 接收到消息
+  print(message)
+  if message == "Hi":
+    password = obtainIdleAddress()
+    
+    row = select_by_address(password)
+    
+    wallet = row['data'].get('wallet')
+    if wallet == None:
+      wallet = ""
+    
+    ws.send(password)
+    message = ws.receive()
+    
+    if message == 'Done':
+      message = ws.receive()
+      row['data']['wallet'] = message
+      row['data']['beeIp'] = remoteAddress
+      update(password, row['status'], row['data'])
+      print('启动成功', message)
+    else:
+      update(password, 1, row['data'])
+      ws.close()
+      return
+    ws.send("Done")
+    while not ws.closed:
+      ping = ws.receive()
+      if ping != None:
+        print(ping, password)
+        ws.send("pong")
+    update(password, 1, row['data'])
+    print('退出', password)
+
+  else:
+    ws.close()
+    return
+  
+
+
 
 @app.route('/')
 def index():
@@ -69,6 +128,11 @@ def getAddressList():
     result += '<pre>'
     result += row['address']
     result += '    '
+    if data.get('wallet') != None:
+      result += data.get('wallet')
+    else:
+      result += '                                        '
+    result += '    '
     result += STATUS_MAP[str(row['status'])]
     result += '    '
     if data.get('sent') == None:
@@ -91,7 +155,7 @@ def obtainIdleAddress():
     cursor = conn.cursor()
     cursor.execute("select address from bee_data where status = 1")
     row = cursor.fetchone()
-    print(row)
+    print('row: ',row)
     if row != None:
       cursor.close()
       cursor = conn.cursor()
@@ -105,6 +169,9 @@ def obtainIdleAddress():
     cursor.close()
     conn.close()
     count = count + 1
+  if address == None:
+    address = str(uuid.uuid1())
+    insert(address, 2, {})
   return address
 
 
@@ -202,5 +269,7 @@ if __name__ == '__main__':
 
   initDB()
   app.debug = True
-  app.run(host="0.0.0.0")
+  server = pywsgi.WSGIServer(('0.0.0.0', 3000), app, handler_class=WebSocketHandler)
+  print('server start')
+  server.serve_forever()
 
