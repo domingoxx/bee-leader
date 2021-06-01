@@ -228,16 +228,12 @@ async def connectLeader():
       print('send terminate bee', flush=True)
       bee_process.terminate()
       bee_process.wait(5)
-      if bee_process.returncode == None:
-        print(f'send kill bee {bee_process.pid}', flush=True)
-        subprocess.check_output(f"kill -9 {bee_process.pid}", shell=True)
+      subprocess.check_output(f"kill -9 {bee_process.pid}", shell=True)
     if clef_process.returncode == None:
       print('send terminate clef', flush=True)
       clef_process.terminate()
       clef_process.wait(5)
-      if clef_process.returncode == None:
-        print(f'send kill bee {clef_process.pid}', flush=True)
-        subprocess.check_output(f"kill -9 {clef_process.pid}", shell=True)
+      subprocess.check_output(f"kill -9 {clef_process.pid}", shell=True)
     if not connection.closed:
       await connection.close()
     
