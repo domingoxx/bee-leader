@@ -9,7 +9,7 @@ from flask_sockets import Sockets
 
 from gevent import monkey,pywsgi
 from geventwebsocket.handler import WebSocketHandler
-import geventwebsocket
+
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
 monkey.patch_all()
@@ -270,6 +270,6 @@ if __name__ == '__main__':
   initDB()
   app.debug = True
   server = pywsgi.WSGIServer(('0.0.0.0', 3000), app, handler_class=WebSocketHandler)
-  print('server start')
+  print('server start', flush=True)
   server.serve_forever()
 
