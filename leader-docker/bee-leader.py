@@ -9,6 +9,7 @@ from flask_sockets import Sockets
 
 from gevent import monkey,pywsgi
 from geventwebsocket.handler import WebSocketHandler
+from geventwebsocket.websocket import WebSocket
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 sys.path.append("..")
@@ -24,45 +25,46 @@ now = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))
 
 @sockets.route('/ws')  # 指定路由
 def echo_socket(ws):
-  
-  remoteAddress = ws.environ['REMOTE_ADDR']
-  message = ws.receive()  # 接收到消息
-  print(message)
-  if message == "Hi":
-    password = obtainIdleAddress()
-    
-    row = select_by_address(password)
-    
-    wallet = row['data'].get('wallet')
-    if wallet == None:
-      wallet = ""
-    
-    ws.send(password)
-    message = ws.receive()
-    
-    if message == 'Done':
+  try:
+    remoteAddress = ws.environ['REMOTE_ADDR']
+    message = ws.receive()  # 接收到消息
+    print(message)
+    if message == "Hi":
+      password = obtainIdleAddress()
+      
+      row = select_by_address(password)
+      
+      wallet = row['data'].get('wallet')
+      if wallet == None:
+        wallet = ""
+      
+      ws.send(password)
       message = ws.receive()
-      row['data']['wallet'] = message
-      row['data']['beeIp'] = remoteAddress
-      update(password, row['status'], row['data'])
-      print('启动成功', message)
-    else:
+      
+      if message == 'Done':
+        message = ws.receive()
+        row['data']['wallet'] = message
+        row['data']['beeIp'] = remoteAddress
+        update(password, row['status'], row['data'])
+        print('启动成功', message)
+      else:
+        update(password, 1, row['data'])
+        ws.close()
+        return
+      ws.send("Done")
+      while not ws.closed:
+        ping = ws.receive()
+        if ping != None:
+          print(ping, password)
+          ws.send("pong")
       update(password, 1, row['data'])
+      print('退出', password)
+
+    else:
       ws.close()
       return
-    ws.send("Done")
-    while not ws.closed:
-      ping = ws.receive()
-      if ping != None:
-        print(ping, password)
-        ws.send("pong")
-    update(password, 1, row['data'])
-    print('退出', password)
-
-  else:
-    ws.close()
-    return
-  
+  except BaseException as err:
+    print(err)
 
 
 
