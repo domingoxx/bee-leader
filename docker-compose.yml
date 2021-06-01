@@ -20,7 +20,7 @@ services:
       "--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", 
       ]
     volumes:
-      - "./data/bee:/opt/bee/data"
+      - "./data/bee:/opt/data"
     deploy:
       mode: replicated
       replicas: 1

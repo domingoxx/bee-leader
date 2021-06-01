@@ -14,7 +14,7 @@ RUN mkdir -p /opt/bee \
     # && rm -rf /var/lib/apt/lists/*;
     
 WORKDIR /opt/bee
-VOLUME /opt/bee
+VOLUME /opt/data
 
 EXPOSE 1633 1634 1635
 
