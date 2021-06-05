@@ -52,7 +52,7 @@ class Bee(threading.Thread):
     # --clef-signer-enable  --clef-signer-endpoint http://127.0.0.1:8551
 
     cmd = f"""
-      bee start {commandArgs} --data-dir {beeDataPath(dirname)} 
+      bee start {commandArgs} --password {dirname} --data-dir {beeDataPath(dirname)} 
     """
     print(cmd)
     self.bee_process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,stdin=subprocess.PIPE)

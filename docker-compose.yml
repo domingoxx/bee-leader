@@ -9,7 +9,7 @@ services:
     ports: 
       - "3000:3000"
     volumes:
-      - "./data/leader:/opt/data/db"
+      - "./data/leader:/opt/db"
   bee:
     environment:
       - BEE_LEADER_WS_URL=ws://bee-leader:3000/ws
