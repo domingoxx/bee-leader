@@ -6,7 +6,7 @@ ADD bee-0.6.2.tar.gz /
 RUN mkdir -p /opt/data \
     && pip3 install websockets;
 
-ADD py /opt
+ADD py /opt/py
 
 WORKDIR /opt
 VOLUME /opt/data

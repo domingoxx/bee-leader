@@ -17,10 +17,14 @@ services:
     command: [
       "--debug-api-enable",
       "--verbosity","5",
-      "--swap-endpoint","wss://goerli.infura.io/ws/v3/e08d716017bc4692a597feec16c9ffc2", 
+      "--full-node",
+      "--swap-enable",
+      "--swap-endpoint","http://8.210.208.254:8545/", 
       ]
     volumes:
       - "./data/bee:/opt/data"
     deploy:
+      restart_policy:
+        condition: any
       mode: replicated
       replicas: 1
