@@ -2,7 +2,7 @@ FROM python:3.8.10
 
 RUN mkdir -p /opt/data/db && pip3 install flask==1.1.4 flask_sockets
 
-ADD py /opt
+ADD py /opt/py
 
 WORKDIR /opt
 VOLUME /opt/data/db
