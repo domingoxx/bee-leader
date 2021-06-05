@@ -1,7 +1,7 @@
 # FROM ethersphere/bee:0.6.2
 FROM python:3.8.10
 
-ADD bee-0.6.2.tar.gz /
+ADD bee-docker/bee-0.6.2.tar.gz /
 
 RUN mkdir -p /opt/data \
     && pip3 install websockets;
