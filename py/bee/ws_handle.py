@@ -34,7 +34,7 @@ async def perform_handshake(ws: WebSocketClientProtocol) -> Bee:
       loop.create_task(ws.close())
     else:
       done_message = WSMessage(WSCommand.handshake_done, address)
-      loop.create_task(send_message(done_message))
+      loop.create_task(send_message(ws, done_message))
   # 创建bee进程
   node_id = message.strData()
   bee = Bee(node_id, bee_started)
