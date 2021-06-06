@@ -52,7 +52,7 @@ async def start_ping_task(ws: WebSocketClientProtocol):
   async def task():
     while not ws.closed:
       await send_message(ws,WSMessage(WSCommand.ping))
-      asyncio.sleep(3)
+      await asyncio.sleep(3)
   loop.create_task(task())
 
 
