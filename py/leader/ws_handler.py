@@ -36,6 +36,7 @@ def perform_handshake(ws: WebSocket) -> str:
         remote_ip = ws.environ['REMOTE_ADDR']
         # address, ip
         update_data(node_id, {'address': address, 'remote_ip': remote_ip})
+        update_status(node_id, 2)
         print('启动成功', message)
         send_message(ws, handshake_done_message(node_id))
         return node_id
