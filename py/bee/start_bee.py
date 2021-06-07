@@ -26,7 +26,7 @@ async def connectLeader():
       message = await receive_message(connection)
       print(message.command)
       if message != None and message.command == WSCommand.pong:
-        print('pong')
+        pass
       elif message != None:
         handle_message_receive(message)
 

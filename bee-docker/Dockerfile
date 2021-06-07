@@ -13,4 +13,4 @@ VOLUME /opt/data
 
 EXPOSE 1633 1634 1635
 
-CMD ["python3","-m","py.bee.start_bee"]
+ENTRYPOINT ["python3","-m","py.bee.start_bee"]

@@ -19,7 +19,7 @@ services:
       "--verbosity","5",
       "--full-node",
       "--swap-enable",
-      "--swap-endpoint","http://8.210.208.254:8545/", 
+      "--swap-endpoint","ws://8.210.208.254:8546", 
       ]
     volumes:
       - "./data/bee:/opt/data"

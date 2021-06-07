@@ -40,8 +40,7 @@ def echo_socket(ws):
       while not ws.closed:
         message = receive_message(ws)
         if message != None and message.command == WSCommand.ping:
-          print('ping')
-          send_message(WSMessage(WSCommand.pong))
+          send_message(ws, WSMessage(WSCommand.pong))
         elif message != None:
           handle_message_receive(ws, message)
         else:
