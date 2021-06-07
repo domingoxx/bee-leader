@@ -25,7 +25,9 @@ async def connectLeader():
     while not connection.closed and bee.isRunning():
       message = await receive_message(connection)
       print(message.command)
-      if message != None and message.command != WSCommand.pong:
+      if message != None and message.command == WSCommand.pong:
+        print('pong')
+      elif message != None:
         handle_message_receive(message)
 
   print('exit')

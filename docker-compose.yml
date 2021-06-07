@@ -4,8 +4,8 @@ services:
         #image: "ethersphere/clef:0.4.12"
         #volumes:
         #- "/home/q/bee/docker-test/bee-clef:/app/data"
-  bee-leader:
-    image: "kkwang/bee-multi-node:leader.1.0.0"
+  leader:
+    image: "kkwang/bee-multi-node:leader-1.0.0"
     ports: 
       - "3000:3000"
     volumes:
@@ -13,7 +13,7 @@ services:
   bee:
     environment:
       - BEE_LEADER_WS_URL=ws://bee-leader:3000/ws
-    image: "kkwang/bee-multi-node:bee.1.0.0"
+    image: "kkwang/bee-multi-node:bee-0.6.2"
     command: [
       "--debug-api-enable",
       "--verbosity","5",

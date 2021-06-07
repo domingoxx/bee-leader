@@ -8,4 +8,4 @@ WORKDIR /opt
 VOLUME /opt/db
 EXPOSE 3000
 
-CMD ["python3", "-m", "py.leader.start_leader"]
+ENTRYPOINT ["python3", "-m", "py.leader.start_leader"]
