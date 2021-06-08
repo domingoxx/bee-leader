@@ -58,7 +58,7 @@ async def reconnect_if_needed(ws: WebSocketClientProtocol, bee: Bee, url: str):
     try:
       print('重连中...')
       connection = await websockets.connect(url)
-      await send_message(connection, WSMessage(WSCommand.handshake_reconnect, bee.datadir))
+      await send_message(connection, WSMessage(WSCommand.handshake_reconnect, bee.node_id))
       message = await receive_message(connection)
       if message != None and message.command == WSCommand.handshake_done:
         print('重连成功')

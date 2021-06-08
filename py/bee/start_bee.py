@@ -6,7 +6,7 @@ import asyncio
 import os
 from py.message.ws_protocol import WSCommand, WSMessage
 from py.bee.bee_runner import Bee
-from py.bee.ws_handle import perform_handshake, start_ping_task, handle_message_receive, receive_message, send_message
+from py.bee.ws_handle import reconnect_if_needed, perform_handshake, start_ping_task, handle_message_receive, receive_message, send_message
 
 
 
@@ -17,9 +17,9 @@ async def connectLeader():
   connection = await websockets.connect(url)
   
   bee = await perform_handshake(connection)
-  print(bee)
+  
   if bee != None:
-    print(bee)
+    
     await start_ping_task(connection)
 
     while bee.isRunning():

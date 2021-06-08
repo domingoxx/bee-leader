@@ -26,6 +26,7 @@ class Bee(threading.Thread):
   def __init__(self, datadir, callback):
     threading.Thread.__init__(self)
     self.datadir = datadir
+    self.node_id = datadir
     self.callback = callback
     self.bee_process = None
 

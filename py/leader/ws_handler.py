@@ -3,7 +3,7 @@ from geventwebsocket.websocket import WebSocket
 
 from py.message.ws_protocol import WSMessage,WSCommand, handshake_done_message, handshake_node_id_message
 
-from py.leader.db_helper import obtain_idle_node_id, update_data, update_status
+from py.leader.db_helper import obtain_idle_node_id, select_by_node_id, update_data, update_status
 
 def receive_message(ws: WebSocket):
   message = ws.receive()
@@ -44,6 +44,13 @@ def perform_handshake(ws: WebSocket) -> str:
         update_status(node_id, 1)
         ws.close()
         return None
+    elif message != None and message.command == WSCommand.handshake_reconnect:
+      node_id = message.strData()
+      bee_node = select_by_node_id(node_id)
+      if bee_node == None:
+        ws.close()
+      update_status(node_id, 2)
+      
     else:
       # 忽略其他消息，握手失败
       ws.close()

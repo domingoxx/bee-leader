@@ -7,6 +7,7 @@ class WSCommand:
   ping = 'ping'
   pong = 'pong'
   handshake_reconnect = 'handshake_reconnect'
+  http_call = 'http_call'
 
 
 class WSMessage:
@@ -30,4 +31,12 @@ def handshake_node_id_message(node_id: str) -> WSMessage:
 def handshake_done_message(node_id: str) -> WSMessage:
   return WSMessage(WSCommand.handshake_done, node_id)
 
-
+def http_call_message(node_id: str, uri: str, method: str, body: any, contentType: str, params: list) -> WSMessage:
+  data = {}
+  data['node_id'] = node_id
+  data['uri'] = uri
+  data['method'] = method
+  data['body'] = body
+  data['content-type'] = contentType
+  data['params'] = params
+  return WSMessage(WSCommand.http_call, data)

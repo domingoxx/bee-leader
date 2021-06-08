@@ -1,8 +1,6 @@
 from flask import Flask, request, Response
-import sqlite3
-import hashlib
+from flask_cors import CORS
 import json
-import uuid
 import time
 import os, sys
 from flask_sockets import Sockets
@@ -24,7 +22,7 @@ monkey.patch_all()
 
 
 app = Flask(__name__)
-
+CORS(app)
 
 sockets = Sockets(app)
 now = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))
