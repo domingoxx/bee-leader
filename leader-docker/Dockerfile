@@ -1,6 +1,6 @@
 FROM python:3.8.10
 
-RUN mkdir -p /opt/db && pip3 install flask==1.1.4 flask_sockets
+RUN mkdir -p /opt/db && pip3 install flask==1.1.4 flask_sockets flask_cors
 
 ADD py /opt/py
 

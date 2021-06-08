@@ -22,7 +22,8 @@ async def connectLeader():
     print(bee)
     await start_ping_task(connection)
 
-    while not connection.closed and bee.isRunning():
+    while bee.isRunning():
+      connection = reconnect_if_needed(connection, bee)
       message = await receive_message(connection)
       print(message.command)
       if message != None and message.command == WSCommand.pong:

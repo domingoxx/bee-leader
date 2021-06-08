@@ -1,6 +1,7 @@
 import asyncio
 import json
 from websockets import WebSocketClientProtocol
+import websockets
 from py.message.ws_protocol import WSMessage, WSCommand
 from py.bee.bee_runner import Bee
 
@@ -45,6 +46,30 @@ async def perform_handshake(ws: WebSocketClientProtocol) -> Bee:
 
   return bee
 
+
+async def reconnect_if_needed(ws: WebSocketClientProtocol, bee: Bee, url: str):
+  if not ws.closed:
+    return ws
+  if not bee.isRunning():
+    return None
+
+  # 开始重连
+  while bee.isRunning():
+    try:
+      print('重连中...')
+      connection = await websockets.connect(url)
+      await send_message(connection, WSMessage(WSCommand.handshake_reconnect, bee.datadir))
+      message = await receive_message(connection)
+      if message != None and message.command == WSCommand.handshake_done:
+        print('重连成功')
+        return connection
+      else:
+        print('重连失败！',message)
+        await connection.close()
+    except BaseException as err:
+      print('重连失败～',err)
+    asyncio.sleep(10)
+  
 
 async def start_ping_task(ws: WebSocketClientProtocol):
   loop = asyncio.get_event_loop()

@@ -6,6 +6,7 @@ class WSCommand:
   handshake_done = 'handshake_done'
   ping = 'ping'
   pong = 'pong'
+  handshake_reconnect = 'handshake_reconnect'
 
 
 class WSMessage:
